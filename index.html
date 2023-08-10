@@ -1,1 +1,154 @@
-test
+<head>
+	<script type="text/javascript">
+
+	var clicked=[]
+	function myclick(x,y){
+    	if(saolei.leiqu[x][y]==1){
+    		alert("game over")
+    		saolei.init()
+    		clicked=[]
+    		return
+    	}
+        console.log("dididi")
+    	clicked.push({x:x,y:y})
+    	document.getElementById(x+"-"+y).style["background-color"]="green"
+
+    	var count=0;
+    	var ha=[];
+    	var temp;
+    	if(x>0&&y>0){
+    		temp=saolei.leiqu[x-1][y-1]
+    		if(temp==1){
+    			count++;
+    		}
+    		ha.push({x:x-1,y:y-1})
+    	}
+    	if(x>0){
+    		temp=saolei.leiqu[x-1][y]
+    		if(temp==1){
+    			count++;
+    		}
+    		ha.push({x:x-1,y:y})
+    	}
+    	if(x>0&&y<saolei.y-1) {
+    		temp=saolei.leiqu[x-1][y+1]
+    		if(temp==1){
+    			count++;
+    		}
+    		ha.push({x:x-1,y:y+1})
+    	}
+    	if(y>0){
+    		temp=saolei.leiqu[x][y-1]
+    		if(temp==1){
+    			count++;
+    		}
+    		ha.push({x:x,y:y-1})
+		}
+		if(y<saolei.y-1){
+    		temp=saolei.leiqu[x][y+1]
+    		if(temp==1){
+    			count++;
+    		}
+    		ha.push({x:x,y:y+1})
+    	}
+    	if(x<saolei.x-1&&y>0){
+    		temp=saolei.leiqu[x+1][y-1]
+    		if(temp==1){
+    			count++;
+    		}
+    		ha.push({x:x+1,y:y-1})
+    	}
+    	if(x<saolei.x-1){
+    		temp=saolei.leiqu[x+1][y]
+    		if(temp==1){
+    			count++;
+    		}
+    		ha.push({x:x+1,y:y})
+    	}
+    	if(x<saolei.x-1&&y<saolei.y-1){
+    		temp=saolei.leiqu[x+1][y+1]
+    		if(temp==1){
+    			count++;
+    		}
+    		ha.push({x:x+1,y:y+1})
+    	}
+    	if(count==0){
+    		for(var i=0;i<ha.length;i++){
+    			var flag=0
+    			for(var j=0;j<clicked.length;j++){
+    				if(clicked[j].x==ha[i].x&&clicked[j].y==ha[i].y){
+    					flag=1;
+    					continue;
+    				}	
+    			}
+    			if(flag==0){
+    				myclick(ha[i].x,ha[i].y)
+    			}
+    		}
+    	}else{
+    		document.getElementById(x+"-"+y).innerHTML=count
+    	}
+    	if(clicked.length==saolei.x*saolei.y-saolei.num){
+    		alert("you win!!!")
+    	}
+    }
+	window.onload=function(){
+		saolei.init()
+		console.log(saolei.leiqu)
+
+	}
+    
+    var saolei={
+    	x:16,
+    	y:9,
+    	num:20,
+    	leiqu:[],
+    	init:function(){
+    		this.makeit()
+    		
+    	},
+    	makeit:function(){
+    		var html=""
+    		for(var t=0;t<saolei.x;t++){
+    			html+="<tr>"
+				var hang=[]
+    			for(var i=0;i<saolei.y;i++){
+    				hang.push(0)
+    			  html+="<td onClick='myclick("+t+","+i+")' class='aaaa' id='"+t+"-"+i+"' style='    height: 20px;  width: 20px;background-color: blue;'><td>"
+    			}
+    			html+="</tr>"
+    			saolei.leiqu.push(hang)	
+    		}
+    		 document.getElementById("saolei").innerHTML=html
+    
+    		var lei=[]
+            for(var i=0;i<saolei.num;i=lei.length){
+            	var x=Math.round(Math.random()*(saolei.x-1))
+            	var y=Math.round(Math.random()*(saolei.y-1))
+            	var flag=0
+            	for(var j=0;j<lei.length;j++){
+            		if(lei[j].x==x&&lei[j].y==y){
+            			flag=1		
+            		}
+            	}
+            	if(flag==0){
+            		lei.push({x:x,y:y})
+            	}
+            }
+            console.log(lei)
+            for(var i=0;i<lei.length;i++){
+            	saolei.leiqu[lei[i].x][lei[i].y]=1
+            }
+
+    	},
+    	
+    }
+	</script>
+</head>
+<body>
+	<div >
+		<table id="saolei" style="color: white">
+			
+		</table>
+	</div>
+</body>
